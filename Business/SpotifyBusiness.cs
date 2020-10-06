@@ -7,13 +7,14 @@ using Microsoft.Extensions.Logging;
 using Twitchbot.Common.Base.Client;
 using Twitchbot.Common.Base.Models;
 using Twitchbot.Common.Models.Domain.Models;
+using Twitchbot.Services.Commands.Interfaces;
 using Twitchbot.Services.Commands.Interfaces.Enums;
 using Twitchbot.Services.Commands.ModelsIn;
 using Twitchbot.Services.Commands.ModelsOut;
 
 namespace Twitchbot.Services.Commands.Business
 {
-    public class SpotifyBusiness
+    public class SpotifyBusiness : ISpotifyBusiness
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<SpotifyBusiness> _logger;
@@ -29,7 +30,7 @@ namespace Twitchbot.Services.Commands.Business
             _client = client;
         }
 
-        internal async Task<HttpResultModel<CommandsModel>> PerformResponseSpotify(CommandsReadModel commandsReadModel, int spotifyType)
+        public async Task<HttpResultModel<CommandsModel>> PerformResponseSpotify(CommandsReadModel commandsReadModel, int spotifyType)
         {
             var resultCommandResponse = new HttpResultModel<CommandsModel>();
             var resultSpotifyCurrentlyPlaying = await SpotifyCurrentlyPlaing();

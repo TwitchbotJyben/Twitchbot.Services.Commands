@@ -9,12 +9,13 @@ using TimeZoneConverter;
 using Twitchbot.Common.Base.Client;
 using Twitchbot.Common.Base.Models;
 using Twitchbot.Common.Models.Domain.Models;
+using Twitchbot.Services.Commands.Interfaces;
 using Twitchbot.Services.Commands.ModelsIn;
 using Twitchbot.Services.Commands.ModelsOut;
 
 namespace Twitchbot.Services.Commands.Business
 {
-    public class UptimeBusiness
+    public class UptimeBusiness : IUptimeBusiness
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<UptimeBusiness> _logger;
@@ -28,11 +29,11 @@ namespace Twitchbot.Services.Commands.Business
             _configuration = configuration;
             _logger = logger;
             _localizer = localizer;
-            _clientId = _configuration["TwitchClientId"];
+            _clientId = _configuration["ApiParams:Twitch:ClientId"];
             _client = client;
         }
 
-        internal async Task<HttpResultModel<CommandsModel>> PerformResponseUptime(CommandsReadModel commandsReadModel)
+        public async Task<HttpResultModel<CommandsModel>> PerformResponseUptime(CommandsReadModel commandsReadModel)
         {
             var resultCommandResponse = new HttpResultModel<CommandsModel>();
             var resultStreamInfo = await GetStreamInformations();

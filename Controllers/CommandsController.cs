@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Twitchbot.Common.Base.Models;
 using Twitchbot.Common.Models.Domain.Models;
 using Twitchbot.Services.Commands.Business;
+using Twitchbot.Services.Commands.Interfaces;
 using Twitchbot.Services.Commands.ModelsIn;
 
 namespace Twitchbot.Services.Commands.Controllers
@@ -16,11 +17,11 @@ namespace Twitchbot.Services.Commands.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ILogger<CommandsController> _logger;
-        private readonly CommandsBusiness _commandsBusiness;
+        private readonly ICommandsBusiness _commandsBusiness;
         private readonly IStringLocalizer<CommandsController> _localizer;
 
         public CommandsController(ILogger<CommandsController> logger,
-            CommandsBusiness commandsBusiness, IStringLocalizer<CommandsController> localizer)
+            ICommandsBusiness commandsBusiness, IStringLocalizer<CommandsController> localizer)
         {
             _logger = logger;
             _commandsBusiness = commandsBusiness;

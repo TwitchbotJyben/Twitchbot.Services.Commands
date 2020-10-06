@@ -7,21 +7,22 @@ using Twitchbot.Common.Base.Models;
 using Twitchbot.Common.Models.Data.Enums;
 using Twitchbot.Common.Models.Domain.Models;
 using Twitchbot.Services.Commands.Dao;
+using Twitchbot.Services.Commands.Interfaces;
 using Twitchbot.Services.Commands.Interfaces.Enums;
 using Twitchbot.Services.Commands.ModelsIn;
 
 namespace Twitchbot.Services.Commands.Business
 {
-    public class CommandsBusiness
+    public class CommandsBusiness : ICommandsBusiness
     {
         private readonly ILogger<CommandsBusiness> _logger;
         private readonly IStringLocalizer<CommandsBusiness> _localizer;
         private readonly CommandsDao _commandsDao;
-        private readonly UptimeBusiness _uptimeBusiness;
-        private readonly SpotifyBusiness _spotifyBusiness;
+        private readonly IUptimeBusiness _uptimeBusiness;
+        private readonly ISpotifyBusiness _spotifyBusiness;
 
-        public CommandsBusiness(ILogger<CommandsBusiness> logger, SpotifyBusiness spotifyBusiness,
-            IStringLocalizer<CommandsBusiness> localizer, CommandsDao commandsDao, UptimeBusiness uptimeBusiness)
+        public CommandsBusiness(ILogger<CommandsBusiness> logger, ISpotifyBusiness spotifyBusiness,
+            IStringLocalizer<CommandsBusiness> localizer, CommandsDao commandsDao, IUptimeBusiness uptimeBusiness)
         {
             _logger = logger;
             _localizer = localizer;
@@ -30,7 +31,7 @@ namespace Twitchbot.Services.Commands.Business
             _spotifyBusiness = spotifyBusiness;
         }
 
-        internal async Task<HttpResultModel<CommandsModel>> GetCommandResponse(CommandsReadModel commandsReadModel)
+        public async Task<HttpResultModel<CommandsModel>> GetCommandResponse(CommandsReadModel commandsReadModel)
         {
             var result = new HttpResultModel<CommandsModel>();
 
@@ -60,27 +61,27 @@ namespace Twitchbot.Services.Commands.Business
             return result;
         }
 
-        internal async Task<IReadOnlyList<CommandsReadModel>> GetCommand(string commandName, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<CommandsReadModel>> GetCommand(string commandName, CancellationToken cancellationToken)
         {
             return await _commandsDao.QueryModel(x => x.Name == commandName, cancellationToken);
         }
 
-        internal async Task<IReadOnlyList<CommandsReadModel>> GetCommands(CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<CommandsReadModel>> GetCommands(CancellationToken cancellationToken)
         {
             return await _commandsDao.QueryModel(x => true, cancellationToken);
         }
 
-        internal async Task<CommandsReadModel> UpdateCommand(CancellationToken cancellationToken, CommandsUpdateModel commandsUpdateModel)
+        public async Task<CommandsReadModel> UpdateCommand(CancellationToken cancellationToken, CommandsUpdateModel commandsUpdateModel)
         {
             return await _commandsDao.UpdateModel(commandsUpdateModel.Id, commandsUpdateModel, cancellationToken);
         }
 
-        internal async Task<CommandsReadModel> CreateCommand(CancellationToken cancellationToken, CommandsCreateModel commandsCreateModel)
+        public async Task<CommandsReadModel> CreateCommand(CancellationToken cancellationToken, CommandsCreateModel commandsCreateModel)
         {
             return await _commandsDao.CreateModel(commandsCreateModel, cancellationToken);
         }
 
-        internal async Task<CommandsReadModel> DeleteCommand(CancellationToken cancellationToken, int id)
+        public async Task<CommandsReadModel> DeleteCommand(CancellationToken cancellationToken, int id)
         {
             return await _commandsDao.DeleteModel(id, cancellationToken);
         }

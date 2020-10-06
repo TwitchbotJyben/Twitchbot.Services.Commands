@@ -19,6 +19,7 @@ using Twitchbot.Common.Models.Domain.Mapping;
 using Twitchbot.Services.Commands.Business;
 using Twitchbot.Services.Commands.Controllers;
 using Twitchbot.Services.Commands.Dao;
+using Twitchbot.Services.Commands.Interfaces;
 
 namespace Twitchbot.Services.Commands
 {
@@ -53,9 +54,9 @@ namespace Twitchbot.Services.Commands
             services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
             services.AddScoped<CommandsController>();
-            services.AddScoped<CommandsBusiness>();
-            services.AddScoped<SpotifyBusiness>();
-            services.AddScoped<UptimeBusiness>();
+            services.AddScoped<ICommandsBusiness, CommandsBusiness>();
+            services.AddScoped<ISpotifyBusiness, SpotifyBusiness>();
+            services.AddScoped<IUptimeBusiness, UptimeBusiness>();
             services.AddScoped<ClientBase>();
             services.AddScoped<CommandsDao>();
 
@@ -97,9 +98,8 @@ namespace Twitchbot.Services.Commands
             else
             {
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
-
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
