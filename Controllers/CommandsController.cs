@@ -63,7 +63,7 @@ namespace Twitchbot.Services.Commands.Controllers
             };
         }
 
-        [HttpPost("/create")]
+        [HttpPost("/command")]
         public async Task<ActionResult<HttpResultModel<CommandsReadModel>>> Post(CancellationToken cancellationToken, CommandsCreateModel commandsCreateModel)
         {
             _logger.LogInformation("Create command {0}", commandsCreateModel.Name);
@@ -78,7 +78,7 @@ namespace Twitchbot.Services.Commands.Controllers
             };
         }
 
-        [HttpPut("/update")]
+        [HttpPut("/command")]
         public async Task<ActionResult<HttpResultModel<CommandsReadModel>>> Put(CancellationToken cancellationToken, CommandsUpdateModel commandsUpdateModel)
         {
             _logger.LogInformation("Update command {0} - {1}", commandsUpdateModel.Id, commandsUpdateModel.Name);
@@ -93,7 +93,7 @@ namespace Twitchbot.Services.Commands.Controllers
             };
         }
 
-        [HttpDelete("/delete")]
+        [HttpDelete("/command")]
         public async Task<ActionResult<HttpResultModel<CommandsReadModel>>> Delete(CancellationToken cancellationToken, int id)
         {
             _logger.LogInformation("Delete command {0}", id);
